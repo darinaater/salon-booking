@@ -2,9 +2,9 @@ import streamlit as st
 from supabase import create_client, Client
 import pandas as pd
 
-# 1. Подключение к базе данных через Secrets
-url = st.secrets["SUPABASE_URL"]
-key = st.secrets["SUPABASE_KEY"]
+# Очищаем ключи от возможных пробелов по краям
+url = st.secrets["SUPABASE_URL"].strip()
+key = st.secrets["SUPABASE_KEY"].strip()
 supabase: Client = create_client(url, key)
 
 st.set_page_config(page_title="Salon Booking System", page_icon="💅", layout="wide")
