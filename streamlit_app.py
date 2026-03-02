@@ -2,26 +2,37 @@ import streamlit as st
 from supabase import create_client, Client
 import pandas as pd
 
-# Безопасное получение данных из Secrets
+# 1. Безопасная очистка ключей
+raw_url = st.secrets.get("SUPABASE_URL", "")
+raw_key = st.secrets.get("SUPABASE_KEY", "")
+
+# Убираем пробелы, кавычки и слэши в конце
+url = raw_url.strip().strip('"').strip("'").rstrip('/')
+key = raw_key.strip().strip('"').strip("'")
+
+# 2. Инициализация клиента
 try:
-    url = st.secrets["SUPABASE_URL"].strip().rstrip('/') # Убираем пробелы и лишние слэши
-    key = st.secrets["SUPABASE_KEY"].strip()
-    # Временный тест для проверки (потом удалим)
-if not url.startswith("https://"):
-    st.error(f"ОШИБКА: URL должен начинаться с https://. Сейчас он: {url}")
-if ".supabase.co" not in url:
-    st.error(f"ОШИБКА: Кажется, URL указан неверно. Проверьте Supabase Settings -> API.")
+    if not url.startswith("https://"):
+        st.error("Ошибка: URL в Secrets должен начинаться с https://")
+        st.stop()
+    
     supabase: Client = create_client(url, key)
 except Exception as e:
-    st.error("Ошибка подключения к базе. Проверьте Secrets!")
+    st.error(f"Не удалось подключиться к базе: {e}")
     st.stop()
+
+# --- Дальше идет твой основной код ---
+st.set_page_config(page_title="Salon Booking System", page_icon="💅", layout="wide")
+
+st.set_page_config(page_title="Salon Booking System", page_icon="💅", layout="wide")
+
 # Кастомный CSS для красоты
 st.markdown("""
     <style>
     .main { background-color: #fff5f8; }
     .stButton>button { width: 100%; border-radius: 10px; background-color: #ff4b4b; color: white; }
     </style>
-    """, unsafe_allow_html=True)
+    """, unsafe_allow_value=True)
 
 # Меню
 menu = ["✨ Записаться", "🔐 Панель Мастера"]
