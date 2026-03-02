@@ -2,12 +2,14 @@ import streamlit as st
 from supabase import create_client, Client
 import pandas as pd
 
-# Очищаем ключи от возможных пробелов по краям
-url = st.secrets["SUPABASE_URL"].strip()
-key = st.secrets["SUPABASE_KEY"].strip()
-supabase: Client = create_client(url, key)
-
-st.set_page_config(page_title="Salon Booking System", page_icon="💅", layout="wide")
+# Безопасное получение данных из Secrets
+try:
+    url = st.secrets["SUPABASE_URL"].strip().rstrip('/') # Убираем пробелы и лишние слэши
+    key = st.secrets["SUPABASE_KEY"].strip()
+    supabase: Client = create_client(url, key)
+except Exception as e:
+    st.error("Ошибка подключения к базе. Проверьте Secrets!")
+    st.stop()
 
 # Кастомный CSS для красоты
 st.markdown("""
