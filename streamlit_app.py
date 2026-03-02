@@ -32,7 +32,7 @@ st.markdown("""
     .main { background-color: #fff5f8; }
     .stButton>button { width: 100%; border-radius: 10px; background-color: #ff4b4b; color: white; }
     </style>
-    """, unsafe_allow_value=True)
+    """, unsafe_allow_html)
 
 # Меню
 menu = ["✨ Записаться", "🔐 Панель Мастера"]
