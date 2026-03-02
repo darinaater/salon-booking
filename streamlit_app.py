@@ -6,11 +6,15 @@ import pandas as pd
 try:
     url = st.secrets["SUPABASE_URL"].strip().rstrip('/') # Убираем пробелы и лишние слэши
     key = st.secrets["SUPABASE_KEY"].strip()
+    # Временный тест для проверки (потом удалим)
+if not url.startswith("https://"):
+    st.error(f"ОШИБКА: URL должен начинаться с https://. Сейчас он: {url}")
+if ".supabase.co" not in url:
+    st.error(f"ОШИБКА: Кажется, URL указан неверно. Проверьте Supabase Settings -> API.")
     supabase: Client = create_client(url, key)
 except Exception as e:
     st.error("Ошибка подключения к базе. Проверьте Secrets!")
     st.stop()
-
 # Кастомный CSS для красоты
 st.markdown("""
     <style>
